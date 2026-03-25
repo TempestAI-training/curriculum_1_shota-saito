@@ -22,21 +22,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies and validate
-        working-directory: backend
-        run: |
-          python -m venv antenv
-          source antenv/bin/activate
-          pip install -r requirements.txt
+      # 🚨 トラブルの元凶だった「antenvの作成（ローカルビルド）」を完全消去！
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            backend/**
-            !backend/antenv/**
-          include-hidden-files: false
+          # 💡 ここが最大のポイント！アスタリスクを消して「backend」とだけ書くことで、箱から出して中身だけを送れます！
+          path: backend
 
   deploy:
     runs-on: ubuntu-latest
