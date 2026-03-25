@@ -8,6 +8,9 @@ type Message = {
   time: string;
 };
 
+// 💡 ここが最大の修正ポイント！Vercelの環境変数（本番URL）を読み込みます
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
 const App: React.FC = () => {
   const [isChatStarted, setIsChatStarted] = useState<boolean>(false);
 
@@ -60,7 +63,8 @@ const ChatScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     setInputText('');
 
     try {
-      const response = await fetch('http://localhost:8000/chat', {
+      // 💡 localhostのベタ書きをやめて、上で定義した API_URL を使います
+      const response = await fetch(`${API_URL}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,6 +97,7 @@ const ChatScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       setMessages((prev) => [...prev, errorMsg]);
     }
   };
+
   return (
     <div className="card chat-screen">
       <div className="chat-header">
