@@ -10,9 +10,10 @@ load_dotenv()
 
 app = FastAPI()
 
+# 💡 ここが最大の修正ポイント！ ["*"] を設定して、Vercelからの通信を無条件で通す「無敵モード」にしました
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
